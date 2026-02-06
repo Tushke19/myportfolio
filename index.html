@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Denis Muturi | Web Developer</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Custom Styles for Animations -->
+  <style>
+    .fade-section {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.9s ease-out, transform 0.9s ease-out;
+    }
+
+    .fade-section.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+
+<body class="font-[Poppins] text-gray-800 scroll-smooth">
+
+  <!-- Navbar -->
+  <nav class="fixed w-full z-50 bg-white/80 backdrop-blur shadow">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+      <h1 class="text-xl font-bold text-blue-600">Denis Muturi</h1>
+      <div class="space-x-4 font-medium">
+        <a href="#about" class="hover:text-blue-600">About</a>
+        <a href="#skills" class="hover:text-blue-600">Skills</a>
+        <a href="#projects" class="hover:text-blue-600">Projects</a>
+        <a href="#contact" class="hover:text-blue-600">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="pt-24 min-h-screen flex items-center bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 text-white fade-section">
+    <div class="max-w-6xl mx-auto px-4 text-center">
+      <h2 class="text-4xl md:text-5xl font-bold mb-6">
+        Hi, I'm Denis Muturi 👋
+      </h2>
+
+      <p class="text-xl md:text-2xl mb-8 h-10 font-semibold">
+        <span id="typewriter" class="drop-shadow-[0_0_20px_rgba(255,255,255,0.8)]"></span>
+        <span class="ml-2 inline-block animate-bounce">👉</span>
+      </p>
+
+      <a href="#contact" class="inline-block bg-white text-blue-600 px-8 py-3 rounded-full font-semibold shadow hover:scale-105 transition">
+        Hire Me
+      </a>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="py-20 bg-gradient-to-r from-slate-100 to-blue-50 fade-section">
+    <div class="max-w-6xl mx-auto px-4 text-center">
+      <h3 class="text-3xl font-bold mb-6 text-blue-700">About Me</h3>
+      <p class="text-lg leading-relaxed max-w-3xl mx-auto">
+        I am a Diploma ICT graduate (2026) from Tetu Technical and Vocational College,
+        Nyeri County. I am a passionate web developer with strong frontend and backend
+        skills, internship experience at Safaricom Limited, and practical exposure
+        through a software boot camp and innovation fairs.
+      </p>
+    </div>
+  </section>
+
+  <!-- Skills Section -->
+  <section id="skills" class="py-20 bg-gradient-to-r from-cyan-600 to-teal-600 text-white fade-section">
+    <div class="max-w-6xl mx-auto px-4">
+      <h3 class="text-3xl font-bold mb-12 text-center">Technical Skills</h3>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="bg-white/10 backdrop-blur p-6 rounded-xl shadow">
+          <h4 class="text-xl font-bold mb-4 text-yellow-300">Frontend</h4>
+          <ul class="space-y-1">
+            <li>HTML5, CSS3</li>
+            <li>JavaScript</li>
+            <li>React JS, Vue JS</li>
+            <li>Tailwind CSS, Bootstrap</li>
+          </ul>
+        </div>
+
+        <div class="bg-white/10 backdrop-blur p-6 rounded-xl shadow">
+          <h4 class="text-xl font-bold mb-4 text-yellow-300">Backend</h4>
+          <ul class="space-y-1">
+            <li>PHP</li>
+            <li>Node.js</li>
+            <li>Python</li>
+          </ul>
+        </div>
+
+        <div class="bg-white/10 backdrop-blur p-6 rounded-xl shadow">
+          <h4 class="text-xl font-bold mb-4 text-yellow-300">Other</h4>
+          <ul class="space-y-1">
+            <li>SQL</li>
+            <li>C++</li>
+            <li>Visual Basic</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section id="projects" class="py-20 bg-gradient-to-r from-purple-50 to-indigo-100 fade-section">
+    <div class="max-w-6xl mx-auto px-4">
+      <h3 class="text-3xl font-bold mb-12 text-center text-indigo-700">
+        Projects & Experience
+      </h3>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
+          <h4 class="text-xl font-bold mb-2 text-indigo-600">
+            Library Management System
+          </h4>
+          <p>
+            Designed and presented a Library Management System at a Science and
+            Innovation Fair, ranking among the <strong>Top Three Performers</strong>.
+          </p>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
+          <h4 class="text-xl font-bold mb-2 text-indigo-600">
+            Internship & Boot Camp
+          </h4>
+          <p>
+            Completed an internship at Safaricom Limited and a 3-month software
+            development boot camp (April – August 2025), focusing on real-world web
+            applications.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-20 bg-gradient-to-br from-gray-900 to-black text-white fade-section">
+    <div class="max-w-6xl mx-auto px-4 text-center">
+      <h3 class="text-3xl font-bold mb-10">Contact Me</h3>
+
+      <div class="flex flex-col items-center space-y-5 text-lg">
+
+        <div class="flex items-center space-x-3">
+          <span class="text-blue-400">📍</span>
+          <span>Nyeri County, Kenya</span>
+        </div>
+
+        <div class="flex items-center space-x-3">
+          <span class="text-blue-400">📧</span>
+          <span>yourname@email.com</span>
+        </div>
+
+        <div class="flex items-center space-x-3">
+          <span class="text-blue-400">📞</span>
+          <span>+254 XXX XXX XXX</span>
+        </div>
+
+      </div>
+
+      <p class="text-sm text-gray-400 mt-12">
+        © 2026 Denis Muturi. All rights reserved.
+      </p>
+    </div>
+  </section>
+
+  <!-- Typewriter Script -->
+  <script>
+    const texts = [
+      "ICT Graduate",
+      "Web Developer",
+      "Software Enthusiast"
+    ];
+
+    let textIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    const typewriter = document.getElementById("typewriter");
+
+    function typeEffect() {
+      const current = texts[textIndex];
+
+      if (!isDeleting) {
+        typewriter.textContent = current.slice(0, charIndex++);
+      } else {
+        typewriter.textContent = current.slice(0, charIndex--);
+      }
+
+      let speed = isDeleting ? 70 : 120;
+
+      if (!isDeleting && charIndex === current.length + 1) {
+        speed = 1500;
+        isDeleting = true;
+      } else if (isDeleting && charIndex === 0) {
+        isDeleting = false;
+        textIndex = (textIndex + 1) % texts.length;
+        speed = 400;
+      }
+
+      setTimeout(typeEffect, speed);
+    }
+
+    typeEffect();
+  </script>
+
+  <!-- Scroll Fade Animation Script -->
+  <script>
+    const sections = document.querySelectorAll(".fade-section");
+
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("show");
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    sections.forEach(section => observer.observe(section));
+  </script>
+
+</body>
+</html>
