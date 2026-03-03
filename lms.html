@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LMS — Library Management System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-page">
+
+  <!-- Decorative background -->
+  <div class="bg-overlay"></div>
+  <div class="bg-texture"></div>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar">
+    <a class="brand" href="index.html">📚 LMS</a>
+    <div class="nav-links">
+      <a href="lms.html" class="active">Login</a>
+      <a href="signup.html">Sign Up</a>
+      <a href="admin-login.html">Admin</a>
+    </div>
+  </nav>
+
+  <!-- ===== LOGIN CARD ===== -->
+  <main class="auth-main">
+    <div class="auth-sidebar">
+      <div class="sidebar-content">
+        <div class="quote-block">
+          <span class="quote-mark">"</span>
+          <p>There is more treasure in books than in all the pirate's loot on Treasure Island.</p>
+          <cite>— Walt Disney</cite>
+        </div>
+        <div class="library-info">
+          <h4>Library Hours</h4>
+          <p>🕗 Mon–Fri: 8:00 AM – 8:00 PM</p>
+          <p>📅 Sat–Sun: 9:00 AM – 5:00 PM</p>
+        </div>
+        <div class="library-info">
+          <h4>Facilities</h4>
+          <ul>
+            <li>AC Reading Rooms</li>
+            <li>Free Wi-Fi</li>
+            <li>Discussion Rooms</li>
+            <li>Free Electricity</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="auth-form-side">
+      <div class="auth-card">
+        <h2>Welcome Back</h2>
+        <p class="auth-subtitle">Sign in to your library account</p>
+
+        <!-- Error / success messages -->
+        <div id="loginMsg" class="msg-box hidden"></div>
+
+        <form id="loginForm" novalidate>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="loginEmail" placeholder="you@example.com" required>
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="loginPassword" placeholder="••••••••" required>
+          </div>
+          <button type="submit" class="btn-primary">Sign In</button>
+        </form>
+
+        <p class="auth-footer">
+          Don't have an account? <a href="signup.html">Create one</a>
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+  <script>
+    // Redirect if already logged in
+    if (lms.getCurrentUser()) window.location.href = 'dashboard.html';
+
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email    = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value.trim();
+      const result   = lms.login(email, password);
+
+      if (result.success) {
+        window.location.href = 'dashboard.html';
+      } else {
+        showMsg('loginMsg', result.message, 'error');
+      }
+    });
+  </script>
+</body>
+</html>
