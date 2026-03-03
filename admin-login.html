@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LMS — Admin Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-page admin-theme">
+
+  <div class="bg-overlay"></div>
+  <div class="bg-texture"></div>
+
+  <nav class="navbar">
+    <a class="brand" href="index.html">📚 LMS</a>
+    <div class="nav-links">
+      <a href="lms.html">User Login</a>
+      <a href="signup.html">Sign Up</a>
+      <a href="admin-login.html" class="active">Admin</a>
+    </div>
+  </nav>
+
+  <main class="auth-main">
+    <div class="auth-sidebar">
+      <div class="sidebar-content">
+        <div class="quote-block">
+          <span class="quote-mark">⚙</span>
+          <p>Administrator access. Manage books, members, and library operations.</p>
+        </div>
+        <div class="library-info">
+          <h4>Admin Powers</h4>
+          <ul>
+            <li>Issue &amp; return books</li>
+            <li>Manage all members</li>
+            <li>Add/remove book records</li>
+            <li>View full audit trail</li>
+          </ul>
+        </div>
+        <div class="library-info hint-box">
+          <h4>🔑 Demo Credentials</h4>
+          <p>Email: <code>admin@lms.com</code></p>
+          <p>Password: <code>admin123</code></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="auth-form-side">
+      <div class="auth-card">
+        <h2>Admin Login</h2>
+        <p class="auth-subtitle">Restricted area — authorised personnel only</p>
+
+        <div id="adminMsg" class="msg-box hidden"></div>
+
+        <form id="adminLoginForm" novalidate>
+          <div class="form-group">
+            <label>Admin Email</label>
+            <input type="email" id="adminEmail" placeholder="admin@lms.com" required>
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="adminPassword" placeholder="••••••••" required>
+          </div>
+          <button type="submit" class="btn-primary btn-admin">Access Dashboard</button>
+        </form>
+
+        <p class="auth-footer">
+          Member? <a href="lms.html">User login →</a>
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+  <script>
+    if (lms.getCurrentAdmin()) window.location.href = 'admin-dashboard.html';
+
+    document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email    = document.getElementById('adminEmail').value.trim();
+      const password = document.getElementById('adminPassword').value.trim();
+      const result   = lms.adminLogin(email, password);
+
+      if (result.success) {
+        window.location.href = 'admin-dashboard.html';
+      } else {
+        showMsg('adminMsg', result.message, 'error');
+      }
+    });
+  </script>
+</body>
+</html>

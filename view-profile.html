@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LMS — View Profile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="app-page">
+
+  <nav class="navbar app-navbar">
+    <a class="brand" href="dashboard.html">LMS</a>
+    <div class="nav-links">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="my-books.html">My Books</a>
+      <a href="profile.html" class="active">Profile</a>
+      <a href="#" id="logoutBtn" class="logout-link">Logout</a>
+    </div>
+  </nav>
+
+  <main class="app-main">
+    <div class="app-header">
+      <h1>My Profile</h1>
+      <p class="app-subtitle">Your account details.</p>
+    </div>
+
+    <div class="section-card narrow-card">
+      <div class="profile-avatar" id="avatarCircle"></div>
+      <div class="profile-detail-row"><span class="detail-label">Name</span><span id="dName" class="detail-value"></span></div>
+      <div class="profile-detail-row"><span class="detail-label">Email</span><span id="dEmail" class="detail-value"></span></div>
+      <div class="profile-detail-row"><span class="detail-label">Mobile</span><span id="dMobile" class="detail-value"></span></div>
+      <div class="profile-detail-row"><span class="detail-label">Address</span><span id="dAddress" class="detail-value"></span></div>
+      <div style="margin-top:24px;">
+        <a href="profile.html" class="btn-primary" style="display:inline-block;text-decoration:none;">Edit Profile</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+  <script>
+    requireLogin();
+    const user = lms.getCurrentUser();
+    document.getElementById('avatarCircle').textContent = user.name.charAt(0).toUpperCase();
+    document.getElementById('dName').textContent    = user.name;
+    document.getElementById('dEmail').textContent   = user.email;
+    document.getElementById('dMobile').textContent  = user.mobile || 'Not set';
+    document.getElementById('dAddress').textContent = user.address || 'Not set';
+
+    document.getElementById('logoutBtn').addEventListener('click', function(e) {
+      e.preventDefault(); lms.logout(); window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>

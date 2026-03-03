@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LMS — My Books</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="app-page">
+
+  <nav class="navbar app-navbar">
+    <a class="brand" href="dashboard.html">LMS</a>
+    <div class="nav-links">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="my-books.html" class="active">My Books</a>
+      <a href="profile.html">Profile</a>
+      <a href="#" id="logoutBtn" class="logout-link">Logout</a>
+    </div>
+  </nav>
+
+  <main class="app-main">
+    <div class="app-header">
+      <h1>My Issued Books</h1>
+      <p class="app-subtitle">All books currently or previously issued to your account.</p>
+    </div>
+
+    <div class="tab-bar">
+      <button class="tab active" data-filter="issued">Active</button>
+      <button class="tab" data-filter="returned">Returned</button>
+      <button class="tab" data-filter="all">All</button>
+    </div>
+
+    <div class="section-card">
+      <div id="booksTable"><p class="empty-hint">Loading...</p></div>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+  <script>
+    requireLogin();
+    const user = lms.getCurrentUser();
+    let currentFilter = 'issued';
+
+    function renderBooks(filter) {
+      currentFilter = filter;
+      let books = lms.getUserBooks(user.id);
+      if (filter !== 'all') books = books.filter(function(b){ return b.status === filter; });
+      const today = new Date().toISOString().split('T')[0];
+      const container = document.getElementById('booksTable');
+      if (!books.length) {
+        container.innerHTML = '<p class="empty-hint">No ' + (filter === 'all' ? '' : filter) + ' books found.</p>';
+        return;
+      }
+      var rows = books.map(function(b, i) {
+        var overdue = b.status === 'issued' && b.dueDate && b.dueDate < today;
+        var badgeClass = overdue ? 'badge-red' : (b.status === 'returned' ? 'badge-grey' : 'badge-green');
+        var statusText = overdue ? 'Overdue' : (b.status === 'returned' ? 'Returned' : 'Active');
+        return '<tr><td>' + (i+1) + '</td><td><strong>' + escHtml(b.bookName) + '</strong></td>'
+          + '<td>' + escHtml(b.bookAuthor) + '</td><td>' + escHtml(b.bookNo) + '</td>'
+          + '<td>' + (b.issueDate||'--') + '</td><td>' + (b.dueDate||'--') + '</td>'
+          + '<td><span class="badge ' + badgeClass + '">' + statusText + '</span></td></tr>';
+      }).join('');
+      container.innerHTML = '<table class="data-table"><thead><tr><th>#</th><th>Book Name</th><th>Author</th><th>Book No.</th><th>Issue Date</th><th>Due Date</th><th>Status</th></tr></thead><tbody>' + rows + '</tbody></table>';
+    }
+
+    renderBooks('issued');
+
+    document.querySelectorAll('.tab').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+        this.classList.add('active');
+        renderBooks(this.dataset.filter);
+      });
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', function(e) {
+      e.preventDefault(); lms.logout(); window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>

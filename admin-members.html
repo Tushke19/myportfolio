@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LMS — Members</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="app-page admin-theme">
+
+  <nav class="navbar app-navbar admin-navbar">
+    <a class="brand" href="admin-dashboard.html">LMS Admin</a>
+    <div class="nav-links">
+      <a href="admin-dashboard.html">Dashboard</a>
+      <a href="admin-members.html" class="active">Members</a>
+      <a href="admin-books.html">Books</a>
+      <a href="#" id="logoutBtn" class="logout-link">Logout</a>
+    </div>
+  </nav>
+
+  <main class="app-main">
+    <div class="app-header">
+      <h1>All Members</h1>
+      <p class="app-subtitle">Registered library members.</p>
+    </div>
+    <div class="section-card">
+      <div id="membersTable"><p class="empty-hint">Loading...</p></div>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+  <script>
+    requireAdmin();
+
+    function renderMembers() {
+      const users = lms.getAllUsers();
+      const container = document.getElementById('membersTable');
+      if (!users.length) {
+        container.innerHTML = '<p class="empty-hint">No members registered yet.</p>';
+        return;
+      }
+      var rows = users.map(function(u, i) {
+        var books = lms.getUserBooks(u.id).filter(function(b){ return b.status === 'issued'; }).length;
+        return '<tr><td>' + (i+1) + '</td>'
+          + '<td><strong>' + escHtml(u.name) + '</strong></td>'
+          + '<td>' + escHtml(u.email) + '</td>'
+          + '<td>' + escHtml(u.mobile||'--') + '</td>'
+          + '<td>' + books + ' active</td>'
+          + '<td><button class="btn-small btn-danger-sm" data-id="' + u.id + '">Remove</button></td></tr>';
+      }).join('');
+      container.innerHTML = '<table class="data-table"><thead><tr><th>#</th><th>Name</th><th>Email</th><th>Mobile</th><th>Books</th><th>Action</th></tr></thead><tbody>' + rows + '</tbody></table>';
+
+      document.querySelectorAll('.btn-danger-sm').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          if (confirm('Remove this member? This cannot be undone.')) {
+            lms.removeUser(this.dataset.id);
+            renderMembers();
+          }
+        });
+      });
+    }
+
+    renderMembers();
+
+    document.getElementById('logoutBtn').addEventListener('click', function(e) {
+      e.preventDefault(); lms.adminLogout(); window.location.href = 'admin-login.html';
+    });
+  </script>
+</body>
+</html>

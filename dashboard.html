@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LMS — My Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="app-page">
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar app-navbar">
+    <a class="brand" href="dashboard.html">📚 LMS</a>
+    <div class="nav-links">
+      <a href="dashboard.html" class="active">Dashboard</a>
+      <a href="my-books.html">My Books</a>
+      <a href="profile.html">Profile</a>
+      <a href="#" id="logoutBtn" class="logout-link">Logout</a>
+    </div>
+  </nav>
+
+  <!-- ===== MAIN ===== -->
+  <main class="app-main">
+    <div class="app-header">
+      <div>
+        <h1 id="welcomeHeading">Welcome back</h1>
+        <p class="app-subtitle">Here's what's happening with your account.</p>
+      </div>
+    </div>
+
+    <!-- Stat Cards -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">📖</div>
+        <div class="stat-body">
+          <div class="stat-value" id="statIssued">0</div>
+          <div class="stat-label">Books Issued</div>
+        </div>
+        <a href="my-books.html" class="stat-link">View list →</a>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">⏰</div>
+        <div class="stat-body">
+          <div class="stat-value" id="statOverdue">0</div>
+          <div class="stat-label">Overdue</div>
+        </div>
+        <a href="my-books.html" class="stat-link">Check now →</a>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">✅</div>
+        <div class="stat-body">
+          <div class="stat-value" id="statReturned">0</div>
+          <div class="stat-label">Books Returned</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="section-card">
+      <h3>Quick Actions</h3>
+      <div class="action-buttons">
+        <a href="my-books.html"      class="action-btn">📚 My Books</a>
+        <a href="profile.html"       class="action-btn">✏️ Edit Profile</a>
+        <a href="change-password.html" class="action-btn">🔒 Change Password</a>
+        <a href="view-profile.html"  class="action-btn">👤 View Profile</a>
+      </div>
+    </div>
+
+    <!-- Recent books preview -->
+    <div class="section-card">
+      <h3>Currently Issued Books</h3>
+      <div id="recentBooks">
+        <p class="empty-hint">No books currently issued.</p>
+      </div>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+  <script>
+    requireLogin();
+
+    const user = lms.getCurrentUser();
+    document.getElementById('welcomeHeading').textContent = `Welcome, ${user.name}`;
+
+    // Stats
+    const issued   = lms.getUserBooks(user.id).filter(b => b.status === 'issued');
+    const returned = lms.getUserBooks(user.id).filter(b => b.status === 'returned');
+    const today    = new Date().toISOString().split('T')[0];
+    const overdue  = issued.filter(b => b.dueDate && b.dueDate < today);
+
+    document.getElementById('statIssued').textContent   = issued.length;
+    document.getElementById('statReturned').textContent = returned.length;
+    document.getElementById('statOverdue').textContent  = overdue.length;
+
+    // Recent books
+    if (issued.length) {
+      const html = issued.slice(0, 3).map(b => `
+        <div class="book-row">
+          <div class="book-row-info">
+            <strong>${escHtml(b.bookName)}</strong>
+            <span class="book-meta">by ${escHtml(b.bookAuthor)} · #${escHtml(b.bookNo)}</span>
+          </div>
+          <span class="badge ${b.dueDate && b.dueDate < today ? 'badge-red' : 'badge-green'}">
+            ${b.dueDate && b.dueDate < today ? 'Overdue' : 'Active'}
+          </span>
+        </div>
+      `).join('');
+      document.getElementById('recentBooks').innerHTML = html;
+    }
+
+    document.getElementById('logoutBtn').addEventListener('click', function(e) {
+      e.preventDefault(); lms.logout(); window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>

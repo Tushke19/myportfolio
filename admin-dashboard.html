@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LMS — Admin Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="app-page admin-theme">
+
+  <nav class="navbar app-navbar admin-navbar">
+    <a class="brand" href="admin-dashboard.html">LMS Admin</a>
+    <div class="nav-links">
+      <a href="admin-dashboard.html" class="active">Dashboard</a>
+      <a href="admin-members.html">Members</a>
+      <a href="admin-books.html">Books</a>
+      <a href="#" id="logoutBtn" class="logout-link">Logout</a>
+    </div>
+  </nav>
+
+  <main class="app-main">
+    <div class="app-header">
+      <div>
+        <h1>Admin Dashboard</h1>
+        <p class="app-subtitle" id="adminWelcome">Library management overview.</p>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">👥</div>
+        <div class="stat-body">
+          <div class="stat-value" id="statMembers">0</div>
+          <div class="stat-label">Total Members</div>
+        </div>
+        <a href="admin-members.html" class="stat-link">Manage →</a>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📚</div>
+        <div class="stat-body">
+          <div class="stat-value" id="statBooks">0</div>
+          <div class="stat-label">Books Issued</div>
+        </div>
+        <a href="admin-books.html" class="stat-link">View all →</a>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">⏰</div>
+        <div class="stat-body">
+          <div class="stat-value" id="statAdminOverdue">0</div>
+          <div class="stat-label">Overdue</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Issue a Book -->
+    <div class="section-card">
+      <h3>Issue a Book to Member</h3>
+      <div id="issueMsg" class="msg-box hidden"></div>
+      <form id="issueForm" class="inline-form">
+        <div class="form-group">
+          <label>Member Email</label>
+          <input type="email" id="issueMemberEmail" placeholder="member@example.com" required>
+        </div>
+        <div class="form-group">
+          <label>Book Name</label>
+          <input type="text" id="issueBookName" placeholder="The Great Gatsby" required>
+        </div>
+        <div class="form-group">
+          <label>Author</label>
+          <input type="text" id="issueBookAuthor" placeholder="F. Scott Fitzgerald" required>
+        </div>
+        <div class="form-group">
+          <label>Book Number</label>
+          <input type="text" id="issueBookNo" placeholder="BK-001" required>
+        </div>
+        <div class="form-group">
+          <label>Due Date</label>
+          <input type="date" id="issueDueDate" required>
+        </div>
+        <button type="submit" class="btn-primary">Issue Book</button>
+      </form>
+    </div>
+
+    <!-- All issued books -->
+    <div class="section-card">
+      <h3>All Active Issued Books</h3>
+      <div id="allBooksTable"><p class="empty-hint">Loading...</p></div>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+  <script>
+    requireAdmin();
+    const admin = lms.getCurrentAdmin();
+    document.getElementById('adminWelcome').textContent = 'Logged in as ' + admin.name;
+
+    function refreshStats() {
+      const users = lms.getAllUsers();
+      const allBooks = lms.getAllBooks();
+      const today = new Date().toISOString().split('T')[0];
+      const issued  = allBooks.filter(function(b){ return b.status === 'issued'; });
+      const overdue = issued.filter(function(b){ return b.dueDate && b.dueDate < today; });
+      document.getElementById('statMembers').textContent      = users.length;
+      document.getElementById('statBooks').textContent        = issued.length;
+      document.getElementById('statAdminOverdue').textContent = overdue.length;
+    }
+
+    function renderAllBooks() {
+      const allBooks = lms.getAllBooks().filter(function(b){ return b.status === 'issued'; });
+      const today = new Date().toISOString().split('T')[0];
+      const container = document.getElementById('allBooksTable');
+      if (!allBooks.length) {
+        container.innerHTML = '<p class="empty-hint">No active issued books.</p>';
+        return;
+      }
+      var rows = allBooks.map(function(b, i) {
+        var overdue = b.dueDate && b.dueDate < today;
+        return '<tr><td>' + (i+1) + '</td>'
+          + '<td>' + escHtml(b.memberName||b.memberId) + '</td>'
+          + '<td><strong>' + escHtml(b.bookName) + '</strong></td>'
+          + '<td>' + escHtml(b.bookAuthor) + '</td>'
+          + '<td>' + escHtml(b.bookNo) + '</td>'
+          + '<td>' + (b.issueDate||'--') + '</td>'
+          + '<td>' + (b.dueDate||'--') + '</td>'
+          + '<td><span class="badge ' + (overdue ? 'badge-red' : 'badge-green') + '">' + (overdue ? 'Overdue' : 'Active') + '</span></td>'
+          + '<td><button class="btn-small btn-return" data-id="' + b.id + '">Mark Returned</button></td></tr>';
+      }).join('');
+      container.innerHTML = '<table class="data-table"><thead><tr><th>#</th><th>Member</th><th>Book</th><th>Author</th><th>Book No</th><th>Issued</th><th>Due</th><th>Status</th><th>Action</th></tr></thead><tbody>' + rows + '</tbody></table>';
+
+      document.querySelectorAll('.btn-return').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          lms.returnBook(this.dataset.id);
+          refreshStats();
+          renderAllBooks();
+        });
+      });
+    }
+
+    // Set default due date to 14 days from today
+    var dd = new Date(); dd.setDate(dd.getDate() + 14);
+    document.getElementById('issueDueDate').value = dd.toISOString().split('T')[0];
+
+    document.getElementById('issueForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const result = lms.issueBook({
+        memberEmail: document.getElementById('issueMemberEmail').value.trim(),
+        bookName:    document.getElementById('issueBookName').value.trim(),
+        bookAuthor:  document.getElementById('issueBookAuthor').value.trim(),
+        bookNo:      document.getElementById('issueBookNo').value.trim(),
+        dueDate:     document.getElementById('issueDueDate').value,
+      });
+      showMsg('issueMsg', result.message, result.success ? 'success' : 'error');
+      if (result.success) { this.reset(); refreshStats(); renderAllBooks(); }
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', function(e) {
+      e.preventDefault(); lms.adminLogout(); window.location.href = 'admin-login.html';
+    });
+
+    refreshStats();
+    renderAllBooks();
+  </script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LMS — All Books</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="app-page admin-theme">
+
+  <nav class="navbar app-navbar admin-navbar">
+    <a class="brand" href="admin-dashboard.html">LMS Admin</a>
+    <div class="nav-links">
+      <a href="admin-dashboard.html">Dashboard</a>
+      <a href="admin-members.html">Members</a>
+      <a href="admin-books.html" class="active">Books</a>
+      <a href="#" id="logoutBtn" class="logout-link">Logout</a>
+    </div>
+  </nav>
+
+  <main class="app-main">
+    <div class="app-header">
+      <h1>Book Records</h1>
+      <p class="app-subtitle">Complete history of all issued books.</p>
+    </div>
+
+    <div class="tab-bar">
+      <button class="tab active" data-filter="issued">Active</button>
+      <button class="tab" data-filter="returned">Returned</button>
+      <button class="tab" data-filter="all">All</button>
+    </div>
+
+    <div class="section-card">
+      <div id="booksTable"><p class="empty-hint">Loading...</p></div>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+  <script>
+    requireAdmin();
+
+    function renderBooks(filter) {
+      var books = lms.getAllBooks();
+      if (filter !== 'all') books = books.filter(function(b){ return b.status === filter; });
+      var today = new Date().toISOString().split('T')[0];
+      var container = document.getElementById('booksTable');
+      if (!books.length) { container.innerHTML = '<p class="empty-hint">No records.</p>'; return; }
+      var rows = books.map(function(b, i) {
+        var overdue = b.status === 'issued' && b.dueDate && b.dueDate < today;
+        var badgeClass = overdue ? 'badge-red' : (b.status === 'returned' ? 'badge-grey' : 'badge-green');
+        var statusText = overdue ? 'Overdue' : (b.status === 'returned' ? 'Returned' : 'Active');
+        var action = b.status === 'issued'
+          ? '<button class="btn-small btn-return" data-id="' + b.id + '">Mark Returned</button>'
+          : '—';
+        return '<tr><td>' + (i+1) + '</td>'
+          + '<td>' + escHtml(b.memberName||'--') + '</td>'
+          + '<td><strong>' + escHtml(b.bookName) + '</strong></td>'
+          + '<td>' + escHtml(b.bookAuthor) + '</td>'
+          + '<td>' + escHtml(b.bookNo) + '</td>'
+          + '<td>' + (b.issueDate||'--') + '</td><td>' + (b.dueDate||'--') + '</td>'
+          + '<td><span class="badge ' + badgeClass + '">' + statusText + '</span></td>'
+          + '<td>' + action + '</td></tr>';
+      }).join('');
+      container.innerHTML = '<table class="data-table"><thead><tr><th>#</th><th>Member</th><th>Book</th><th>Author</th><th>No.</th><th>Issued</th><th>Due</th><th>Status</th><th>Action</th></tr></thead><tbody>' + rows + '</tbody></table>';
+
+      document.querySelectorAll('.btn-return').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          lms.returnBook(this.dataset.id);
+          renderBooks(document.querySelector('.tab.active').dataset.filter);
+        });
+      });
+    }
+
+    renderBooks('issued');
+
+    document.querySelectorAll('.tab').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+        this.classList.add('active');
+        renderBooks(this.dataset.filter);
+      });
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', function(e) {
+      e.preventDefault(); lms.adminLogout(); window.location.href = 'admin-login.html';
+    });
+  </script>
+</body>
+</html>
