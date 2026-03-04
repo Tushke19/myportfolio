@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="description" content="Denis Muturi - Web Developer Portfolio. ICT Graduate from Tetu Technical College with expertise in Frontend & Backend Development.">
   <title>Denis Muturi | Web Developer Portfolio</title>
@@ -102,24 +102,99 @@
 <script>
      (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
-  <!-- Navbar -->
-  <nav class="fixed w-full z-50 bg-white/80 backdrop-blur shadow">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
-      <h1 class="text-xl font-bold text-blue-600">Denis Muturi</h1>
-      <div class="space-x-4 font-medium">
-        <a href="#about" class="hover:text-blue-600">About</a>
-        <a href="#skills" class="hover:text-blue-600">Skills</a>
-        <a href="#projects" class="hover:text-blue-600">Projects</a>
-        <a href="#contact" class="hover:text-blue-600">Contact</a>
+  <!-- ========== NAVBAR ========== -->
+  <nav class="sticky top-0 w-full z-50 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-700 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1.5 flex justify-between items-center">
+      <!-- Logo/Brand -->
+      <div class="flex items-center space-x-1.5">
+        <div class="w-8 h-8 bg-white rounded flex items-center justify-center font-bold text-blue-600 text-sm">DM</div>
+        <h1 class="text-lg font-bold text-white hidden sm:block">Denis Muturi</h1>
+      </div>
+
+      <!-- Desktop Navigation Links -->
+      <div class="hidden md:flex space-x-6 items-center font-medium text-sm">
+        <a href="#about" class="text-white hover:text-blue-200 transition-colors duration-200 flex items-center space-x-1" title="About Me">
+          <span>👤</span>
+          <span>About</span>
+        </a>
+        <a href="#skills" class="text-white hover:text-blue-200 transition-colors duration-200 flex items-center space-x-1" title="My Skills">
+          <span>⚙️</span>
+          <span>Skills</span>
+        </a>
+        <a href="#projects" class="text-white hover:text-blue-200 transition-colors duration-200 flex items-center space-x-1" title="My Projects">
+          <span>🚀</span>
+          <span>Projects</span>
+        </a>
+        <a href="#contact" class="text-white hover:text-blue-200 transition-colors duration-200 flex items-center space-x-1" title="Contact Me">
+          <span>📧</span>
+          <span>Contact</span>
+        </a>
+      </div>
+
+      <!-- Social Links (Desktop) -->
+      <div class="hidden md:flex space-x-4">
+        <a href="https://github.com" target="_blank" class="text-white hover:text-blue-200 transition-transform hover:scale-110" title="GitHub">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v 3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        </a>
+        <a href="https://linkedin.com" target="_blank" class="text-white hover:text-blue-200 transition-transform hover:scale-110" title="LinkedIn">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.475-2.236-1.986-2.236-1.081 0-1.722.722-2.006 1.422-.103.249-.129.597-.129.946v5.437h-3.554s.047-8.825 0-9.745h3.554v1.378c-.429-.682-1.191-1.65-2.896-1.65-2.165 0-3.793 1.41-3.793 4.44v5.577H2.422V5.933h3.554v1.346c.711-1.096 1.979-2.579 4.894-2.579 3.762 0 6.577 2.256 6.577 7.112v8.64zM5.337 5.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 14.019H3.555V5.933h3.564v13.519zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg>
+        </a>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button class="md:hidden text-white focus:outline-none hamburger" id="mobileMenuBtn" aria-label="Toggle menu">
+        <span class="block w-6 h-0.5 bg-white mb-1.5 transition-all"></span>
+        <span class="block w-6 h-0.5 bg-white mb-1.5 transition-all"></span>
+        <span class="block w-6 h-0.5 bg-white transition-all"></span>
+      </button>
+    </div>
+
+    <!-- Mobile Navigation Menu -->
+    <div id="mobileMenu" class="hidden md:hidden bg-blue-700/95 backdrop-blur border-t border-blue-600">
+      <div class="max-w-7xl mx-auto px-4 py-4 space-y-3">
+        <a href="#about" class="block text-white hover:text-blue-200 py-2 px-3 rounded transition-colors" onclick="closeMobileMenu()">👤 About Me</a>
+        <a href="#skills" class="block text-white hover:text-blue-200 py-2 px-3 rounded transition-colors" onclick="closeMobileMenu()">⚙️ Skills</a>
+        <a href="#projects" class="block text-white hover:text-blue-200 py-2 px-3 rounded transition-colors" onclick="closeMobileMenu()">🚀 Projects</a>
+        <a href="#contact" class="block text-white hover:text-blue-200 py-2 px-3 rounded transition-colors" onclick="closeMobileMenu()">📧 Contact</a>
+        <hr class="border-blue-600 my-2">
+        <div class="flex space-x-4 px-3 py-2">
+          <a href="https://github.com" target="_blank" class="text-white hover:text-blue-200"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v 3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></a>
+          <a href="https://linkedin.com" target="_blank" class="text-white hover:text-blue-200"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.475-2.236-1.986-2.236-1.081 0-1.722.722-2.006 1.422-.103.249-.129.597-.129.946v5.437h-3.554s.047-8.825 0-9.745h3.554v1.378c-.429-.682-1.191-1.65-2.896-1.65-2.165 0-3.793 1.41-3.793 4.44v5.577H2.422V5.933h3.554v1.346c.711-1.096 1.979-2.579 4.894-2.579 3.762 0 6.577 2.256 6.577 7.112v8.64zM5.337 5.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 14.019H3.555V5.933h3.564v13.519zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg></a>
+        </div>
       </div>
     </div>
   </nav>
+
+  <!-- Mobile Navigation Script -->
+  <script>
+    // Mobile menu toggle functionality
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const hamburger = document.querySelector('.hamburger');
+
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      hamburger.classList.toggle('active');
+    });
+
+    function closeMobileMenu() {
+      mobileMenu.classList.add('hidden');
+      hamburger.classList.remove('active');
+    }
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('nav')) {
+        mobileMenu.classList.add('hidden');
+        hamburger.classList.remove('active');
+      }
+    });
+  </script>
 
   <!-- ========== HERO SECTION ========== 
        Main landing section with introduction & typewriter effect
        Features gradient background and call-to-action button
   -->
-  <section class="pt-24 min-h-screen flex items-center bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 text-white fade-section">
+  <section class=\"pt-8 min-h-screen flex items-center bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 text-white fade-section\">
     <div class="max-w-6xl mx-auto px-4 text-center">
       <!-- Main heading with greeting emoji -->
       <header class="text-4xl md:text-5xl font-bold mb-6">
@@ -280,6 +355,12 @@
         <div class="flex items-center space-x-3">
           <span class="text-blue-400 text-2xl">📞</span>
           <a href="tel:+254113911639" class="hover:text-blue-400 transition">+254 113911639</a>
+        </div>
+
+        <!-- WhatsApp -->
+        <div class="flex items-center space-x-3">
+          <span class="text-blue-400 text-2xl">💬</span>
+          <a href="https://wa.me/qr/3WZW4AWLA7OLL1" target="_blank" class="hover:text-blue-400 transition">WhatsApp Message</a>
         </div>
 
       </div>
